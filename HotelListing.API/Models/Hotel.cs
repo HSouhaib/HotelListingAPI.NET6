@@ -9,6 +9,5 @@ public class Hotel
    public string Address { get; set; }
    public double Rating { get; set; }
    public Country Country { get; set; }
-   [ForeignKey(nameof(CountryId))]
    public int CountryId { get; set; }
 }
