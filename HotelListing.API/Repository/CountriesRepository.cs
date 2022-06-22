@@ -15,7 +15,7 @@ public class CountriesRepository : GenericRepository<Country>, ICountriesReposit
    }
    public async Task<Country> GetDetails(int id)
    {
-      return  await _context.Countries.Include(h => h.Hotels)
-         .FirstOrDefaultAsync(h => h.Id == id);
+      return  await _context.Countries.Include(c => c.Hotels)
+         .FirstOrDefaultAsync(c => c.Id == id);
    }
 }

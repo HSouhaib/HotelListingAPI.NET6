@@ -44,7 +44,7 @@ namespace HotelListing.API.Controllers
 
          if (country == null)
          {
-            return NotFound("Country Not Listed");
+            return NotFound("Country is Not Listed");
          }
 
          var record = _mapper.Map<GetCountryDetailsDTO>(country);
@@ -59,7 +59,7 @@ namespace HotelListing.API.Controllers
       {
          if (id != updateCountryDTO.Id)
          {
-            return BadRequest("Invalid Record Id");
+            return BadRequest("Unmatched COUNTRY ID");
          }
 
          //_context.Entry(updateCountryDTO).State = EntityState.Modified;
