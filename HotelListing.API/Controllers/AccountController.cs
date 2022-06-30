@@ -1,5 +1,6 @@
-﻿using HotelListing.API.Contracts;
-using HotelListing.API.ModelsDTO.Users;
+﻿
+using HotelListing.API.Core.CoreContracts;
+using HotelListing.API.Core.CoreModelsDTO.Users;
 using Microsoft.AspNetCore.Http;
 using Microsoft.AspNetCore.Mvc;
 
@@ -10,9 +11,12 @@ namespace HotelListing.API.Controllers;
 public class AccountController : ControllerBase
 {
    private readonly IAuthManager _authManager;
-   public AccountController(IAuthManager authManager)
+   private readonly ILogger<AccountController> _logger;
+
+   public AccountController(IAuthManager authManager, ILogger<AccountController> logger)
    {
       _authManager = authManager;
+      _logger = logger;
    }
 
    //POST: api/Account/register
@@ -23,7 +27,10 @@ public class AccountController : ControllerBase
    [ProducesResponseType(StatusCodes.Status200OK)]
    public async Task<IActionResult> Register([FromBody] ApiUserDTO apiUserDto)
    {
+      _logger.LogInformation($"Registration Attempt for {apiUserDto.Email}");
+
       var errors = await _authManager.RegisterUser(apiUserDto);
+
 
       if (errors.Any())
       {
@@ -33,9 +40,7 @@ public class AccountController : ControllerBase
          }
          return BadRequest(ModelState);
       }
-
       return Ok();
-
    }
 
    //POST: api/Account/login
@@ -46,6 +51,9 @@ public class AccountController : ControllerBase
    [ProducesResponseType(StatusCodes.Status200OK)]
    public async Task<IActionResult> Login([FromBody] LoginDTO loginDto)
    {
+      _logger.LogInformation($"Login Attempt for {loginDto.Email}");
+
+
       var AuthResponse = await _authManager.LoginUser(loginDto);
 
       if (AuthResponse is null)
